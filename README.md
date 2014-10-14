@@ -76,7 +76,7 @@ drush_print_r($results);
 
 Limiting by collection
 ----------------------
-Use the 'fq' solr param to apply a filter query:
+Use the 'fq' solr param to apply a filter query.  Here we limit by member of collection.
 
 ```php
 $qp = new IslandoraSolrQueryProcessor();
@@ -89,3 +89,20 @@ $qp->executeQuery();
 $objects = $qp->islandoraSolrResult['response']['objects'];
 drush_print_r($objects);
 ```
+
+Getting the number of results found
+-----------------------------------
+The solr results contain a 'numFound' entry that tells you the number of results you got.
+
+```php
+$qp = new IslandoraSolrQueryProcessor();
+$query = 'mods_genre_ms:Meme';
+$qp->buildQuery($query);
+$qp->solrParams['fl'] = "PID,RELS_EXT_isMemberOfCollection_uri_ms";
+$qp->solrParams['fq'] = 'RELS_EXT_isMemberOfCollection_uri_ms:"info:fedora/islandora:condascending_wonka_collection"';
+$qp->executeQuery();
+
+$numFound = $qp->islandoraSolrResult['response']['numFound'];
+drush_print_r($numFound);
+```
+
