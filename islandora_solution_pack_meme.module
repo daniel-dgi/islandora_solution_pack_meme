@@ -1,0 +1,86 @@
+<?php
+
+/**
+ * @file
+ * Hooks and api for the Islandora Meme Solution Pack.
+ */
+
+/**
+ * Implements hook_islandora_required_objects().
+ */
+function islandora_solution_pack_meme_islandora_required_objects(IslandoraTuque $connection) {
+  // Paths to other modules so we can use their already defined collection policies.
+  $islandora_path = drupal_get_path('module', 'islandora');
+  $basic_image_path = drupal_get_path('module', 'islandora_basic_image');
+
+  // Path to this module.
+  $module_path = drupal_get_path('module', 'islandora_solution_pack_meme');
+
+  // Meme collection.
+  $meme_collection = $connection->repository->constructObject('islandora:meme_collection');
+  $meme_collection->owner = 'fedoraAdmin';
+  $meme_collection->label = 'Meme Collection';
+  $meme_collection->models = 'islandora:collectionCModel';
+  $meme_collection->relationships->add(FEDORA_RELS_EXT_URI, 'isMemberOfCollection', 'islandora:root');
+
+  // Meme collection policy.
+  $meme_collection_policy = $meme_collection->constructDatastream('COLLECTION_POLICY', 'X');
+  $meme_collection_policy->label = 'Collection policy';
+  $meme_collection_policy->mimetype = 'text/xml';
+  $meme_collection_policy->setContentFromFile("$islandora_path/xml/islandora_collection_policy.xml", FALSE);
+  $meme_collection->ingestDatastream($meme_collection_policy);
+
+  // Condascending Wonka collection.
+  $condascending_wonka_collection = $connection->repository->constructObject('islandora:condascending_wonka_collection');
+  $condascending_wonka_collection->owner = 'fedoraAdmin';
+  $condascending_wonka_collection->label = 'Condascending Wonka Collection';
+  $condascending_wonka_collection->models = 'islandora:collectionCModel';
+  $condascending_wonka_collection->relationships->add(FEDORA_RELS_EXT_URI, 'isMemberOfCollection', 'islandora:meme_collection');
+
+  // Condascending Wonka collection policy.
+  $condascending_wonka_collection_policy = $condascending_wonka_collection->constructDatastream('COLLECTION_POLICY', 'X');
+  $condascending_wonka_collection_policy->label = 'Collection policy';
+  $condascending_wonka_collection_policy->mimetype = 'application/xml';
+  $condascending_wonka_collection_policy->setContentFromFile("$basic_image_path/xml/islandora_basic_image_collection_policy.xml", FALSE);
+  $condascending_wonka_collection->ingestDatastream($condascending_wonka_collection_policy);
+
+  // Success Kid collection.
+  $success_kid_collection = $connection->repository->constructObject('islandora:success_kid_collection');
+  $success_kid_collection->owner = 'fedoraAdmin';
+  $success_kid_collection->label = 'Success Kid Collection';
+  $success_kid_collection->models = 'islandora:collectionCModel';
+  $success_kid_collection->relationships->add(FEDORA_RELS_EXT_URI, 'isMemberOfCollection', 'islandora:meme_collection');
+
+  // Success Kid collection policy.
+  $success_kid_collection_policy = $success_kid_collection->constructDatastream('COLLECTION_POLICY', 'X');
+  $success_kid_collection_policy->label = 'Collection policy';
+  $success_kid_collection_policy->mimetype = 'application/xml';
+  $success_kid_collection_policy->setContentFromFile("$basic_image_path/xml/islandora_basic_image_collection_policy.xml", FALSE);
+  $success_kid_collection->ingestDatastream($success_kid_collection_policy);
+
+  // First World Problems collection.
+  $first_world_problems_collection = $connection->repository->constructObject('islandora:first_world_problems_collection');
+  $first_world_problems_collection->owner = 'fedoraAdmin';
+  $first_world_problems_collection->label = 'First World Problems Collection';
+  $first_world_problems_collection->models = 'islandora:collectionCModel';
+  $first_world_problems_collection->relationships->add(FEDORA_RELS_EXT_URI, 'isMemberOfCollection', 'islandora:meme_collection');
+
+  // First World Problems collection policy.
+  $first_world_problems_collection_policy = $first_world_problems_collection->constructDatastream('COLLECTION_POLICY', 'X');
+  $first_world_problems_collection_policy->label = 'Collection policy';
+  $first_world_problems_collection_policy->mimetype = 'application/xml';
+  $first_world_problems_collection_policy->setContentFromFile("$basic_image_path/xml/islandora_basic_image_collection_policy.xml", FALSE);
+  $first_world_problems_collection->ingestDatastream($first_world_problems_collection_policy);
+
+  return array(
+    'islandora_solution_pack_meme' => array(
+      'title' => 'Islandora Meme',
+      'objects' => array(
+        $meme_collection,
+        $condascending_wonka_collection,
+        $success_kid_collection,
+        $first_world_problems_collection,
+      ),
+    ),
+  );
+}

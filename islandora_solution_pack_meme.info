@@ -1,0 +1,7 @@
+name = "Islandora Meme Solution Pack "
+description = "A module to handle ALL THE MEMES!!!"
+dependencies[] = islandora
+dependencies[] = islandora_basic_image
+package = Islandora Solution Packs
+core = 7.x
+version = 7.x-dev
