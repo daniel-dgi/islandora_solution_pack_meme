@@ -63,3 +63,29 @@ Actually getting some memes
 ---------------------------
 Our output from our previous query only gave us the children of the meme_collection, which is nothing but three other collections.  That’s probably not too useful, so let’s query for something more significant.  I’ve given each meme a MODS genre of ‘Meme’.  Let’s take advantage of that.
 
+```php
+$qp = new IslandoraSolrQueryProcessor();
+$query = 'mods_genre_ms:Meme';
+$qp->buildQuery($query);
+$qp->solrParams['fl'] = "PID,RELS_EXT_isMemberOfCollection_uri_ms";
+$qp->executeQuery();
+
+$results = $qp->islandoraSolrResult['response'];
+drush_print_r($results);
+```
+
+Limiting by collection
+----------------------
+Use the 'fq' solr param to apply a filter query:
+
+```php
+$qp = new IslandoraSolrQueryProcessor();
+$query = 'mods_genre_ms:Meme';
+$qp->buildQuery($query);
+$qp->solrParams['fl'] = "PID,RELS_EXT_isMemberOfCollection_uri_ms";
+$qp->solrParams['fq'] = 'RELS_EXT_isMemberOfCollection_uri_ms:"info:fedora/islandora:condascending_wonka_collection"';
+$qp->executeQuery();
+
+$results = $qp->islandoraSolrResult['response'];
+drush_print_r($results);
+```
