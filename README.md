@@ -70,7 +70,7 @@ $qp->buildQuery($query);
 $qp->solrParams['fl'] = "PID,RELS_EXT_isMemberOfCollection_uri_ms";
 $qp->executeQuery();
 
-$results = $qp->islandoraSolrResult['response'];
+$objects = $qp->islandoraSolrResult['response']['objects'];
 drush_print_r($results);
 ```
 
@@ -86,6 +86,6 @@ $qp->solrParams['fl'] = "PID,RELS_EXT_isMemberOfCollection_uri_ms";
 $qp->solrParams['fq'] = 'RELS_EXT_isMemberOfCollection_uri_ms:"info:fedora/islandora:condascending_wonka_collection"';
 $qp->executeQuery();
 
-$results = $qp->islandoraSolrResult['response'];
-drush_print_r($results);
+$objects = $qp->islandoraSolrResult['response']['objects'];
+drush_print_r($objects);
 ```
