@@ -71,7 +71,7 @@ $qp->solrParams['fl'] = "PID,RELS_EXT_isMemberOfCollection_uri_ms";
 $qp->executeQuery();
 
 $objects = $qp->islandoraSolrResult['response']['objects'];
-drush_print_r($results);
+drush_print_r($objects);
 ```
 
 Limiting by collection
